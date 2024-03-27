@@ -43,8 +43,8 @@ knitr::opts_chunk$set(echo = TRUE)
 install.packages("devtools")
 library(devtools)
 
-devtools::install_github("wangxlab/iGenSig-Rx")
-library(iGenSig-Rx)
+devtools::install_github("sanghoonleepitt/iGenSigRx")
+library(iGenSigRx)
 ```
 
 ## D. Running iGenSig-Rx
