@@ -13,29 +13,29 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## iGenSig-Rx: an integral genomic signature based white-box method for modeling clinical therapeutic responses using genome-wide sequencing data
 
-•	The current version of iGenSig-Rx is beta 3.2.3 (March 11th, 2024). 
+• The current version of iGenSig-Rx is beta 3.2.3 (March 11th, 2024).
 
-•	The iGenSig-Rx was built on R version 4.1.0 and tested on Linux and Windows environment. 
+• The iGenSig-Rx was built on R version 4.1.0 and tested on Linux and Windows environment.
 
 ## A. Introduction
 
-•	Here we developed an integral genomic signature (iGenSig-Rx) analysis as a new class of transparent, interpretable, and resilient modeling methods for big data-based precision medicine with improved cross-dataset applicability and tolerance to sequencing bias. 
+• Here we developed an integral genomic signature (iGenSig-Rx) analysis as a new class of transparent, interpretable, and resilient modeling methods for big data-based precision medicine with improved cross-dataset applicability and tolerance to sequencing bias.
 
-•	We define genomic features that significantly correlate with a clinical phenotype (such as therapeutic response) as genomic correlates, and an integral genomic signature as the integral set of redundant genomic correlates for a given clinical phenotype such as therapeutic response.
+• We define genomic features that significantly correlate with a clinical phenotype (such as therapeutic response) as genomic correlates, and an integral genomic signature as the integral set of redundant genomic correlates for a given clinical phenotype such as therapeutic response.
 
-•	We postulate that the redundant genomic features, which are usually eliminated through dimensionality reduction or feature removal  during multi-omics modeling, may help overcome the sequencing bias. 
+• We postulate that the redundant genomic features, which are usually eliminated through dimensionality reduction or feature removal during multi-omics modeling, may help overcome the sequencing bias.
 
-•	Using genomic dataset for chemical perturbations, we developed the iGenSig-Rx models predicting clinical response to HER2-targeted therapy and tested the cross-dataset performance of selected models based on independent multi-omics datasets for breast cancer HER2-positive patients assessing their therapeutic responses.
+• Using genomic dataset for chemical perturbations, we developed the iGenSig-Rx models predicting clinical response to HER2-targeted therapy and tested the cross-dataset performance of selected models based on independent multi-omics datasets for breast cancer HER2-positive patients assessing their therapeutic responses.
 
 ## B. How to build iGenSig-Rx models based on CALGB dataset and predict the therapeutic response in ACOSOG and NOAH datasets.
 
-* Find “iGenSigRx_RunCalculation_b3.2.3.R” file in your folder. This file contains the script to perform iGenSig-Rx modeling. 
+-   Find "iGenSigRx_RunCalculation_b3.2.3.R" file in your folder. This file contains the script to perform iGenSig-Rx modeling.
 
-* the iGenSig-Rx module has been tested on the latest R version 4.3.2 with MacOS Sonoma 14.4
+-   the iGenSig-Rx module has been tested on the latest R version 4.3.2 with MacOS Sonoma 14.4
 
-* The iGenSig-Rx runs for one permutation and whole tranining set, instead of all 10 permutations. 
+-   The iGenSig-Rx runs for one permutation and whole tranining set, instead of all 10 permutations.
 
-* Total running time on Windows 10 was ~ 2 hours. It can vary according to your computer's spec.
+-   Total running time on Windows 10 was \~ 2 hours. It can vary according to your computer's spec.
 
 ## C. Installing R packages
 
@@ -49,9 +49,10 @@ library(iGenSig-Rx)
 
 ## D. Running iGenSig-Rx
 
-## Step1. Setting parameters and output directory 
-1) the most important parameter is the sen.weightcut and res.weightcut. This parameter represents the signal to noise threshold. We have tested sen.weightcut and res.weightcut in the range 0.05~2.5. We found that 0.13 was the best to obtain signal against noise. 
-2) the power can be set between 1 or 2, and ECNpenalty can be set as 0.5 or 1. We used an universal parameter root=1, power=1, and ECNpenalty=1 in the manuscript.
+## Step1. Setting parameters and output directory
+
+1)  the most important parameter is the sen.weightcut and res.weightcut. This parameter represents the signal to noise threshold. We have tested sen.weightcut and res.weightcut in the range 0.05\~2.5. We found that 0.13 was the best to obtain signal against noise.
+2)  the power can be set between 1 or 2, and ECNpenalty can be set as 0.5 or 1. We used an universal parameter root=1, power=1, and ECNpenalty=1 in the manuscript.
 
 ```{Parameter setting}
 sen.weightcut<- 0.13; res.weightcut<- 0.13; root<- 1; ECNpenalty<- 1; power=1
@@ -75,7 +76,7 @@ dir.create(CALGB.gensigdir)  # This is output sub-directory
 #Save the parameters to a file
 save(parameters,file=paste0(CALGB.gensigdir,"/iGenSig.parameters.rda"))
 ```
- 
+
 ## Step2. Calculate iGenSig-Rx score based on similarity method: CALGB clinical trial
 
 Perform weighted K-S tests for each permuted training/testing set or all CALGB subjects as training set
@@ -113,7 +114,7 @@ for (i in c(1)) {
 }
 ```
 
-## Step3. CALGB: dGenSig and benchmark test	 		
+## Step3. CALGB: dGenSig and benchmark test
 
 ```{CALGB iGenSig_Rx score}
 batchCal.dGenSig.trial2trial.train(gensigdir=CALGB.gensigdir,test.matrix=fold.assign[,colnames(fold.assign) %in%
@@ -133,7 +134,7 @@ dgensig.model=mget(load(paste(train.gensigdir,"/iGenSig.parameters.rda",sep=""),
 list2env(dgensig.model$parameters, .GlobalEnv)
 ```
 
-## Step5. Option 1: calculate iGenSig-Rx scores for Validation dataset: ACOSOG clinical trial data # this takes about 2 min.
+## Step5. Option 1: calculate iGenSig-Rx scores for Validation dataset: ACOSOG clinical trial data \# this takes about 2 min.
 
 ```{calculate iGenSig_Rx score on ACOSG}
 for (i in c(1)) {
@@ -150,7 +151,6 @@ for (i in c(1)) {
               # p.cut should be assigned NULL if similarity index is used instead of correlation statistic
 }
 ```
-
 
 ## Step6. Calculate dGenSig scores and benchmark for Validation dataset: ACOSOG clinical trial data
 
@@ -172,7 +172,6 @@ dgensig.model=mget(load(paste(train.gensigdir,"/iGenSig.parameters.rda",sep=""),
 list2env(dgensig.model$parameters, .GlobalEnv)
 ```
 
-
 ## Step8. Calculated GenSig scores for Validation data: NOAH clinical trial data
 
 If you want to calculate iGenSig-Rx scores for 10 permutations, please run the for look like "for (i in 1:nrow(fold.assign)) {"
@@ -193,7 +192,6 @@ for (i in c(1)) {
  }
 ```
 
-
 ## Step9. calculate dGenSig and benchmark for Validation data: NOAH clinical trial data
 
 ```{NOAH_dGenSig}
@@ -203,7 +201,6 @@ batchbenchmark.dGenSig.trial(gensig.dir=NOAH.gensigdir, phenoData=NOAH.phenoData
                              by.cluster=by.cluster, validationset=TRUE)
 ```
 
-
 ## E. Expected outcome
-Please find "./Result_iGenSigRx/iGenSig_CALGB_ACOSOG/2024-03-26.dGenSig_45_benchmark.result.xls" file. The file has the summary of the prediction performance AUROC.
 
+Please find "./Result_iGenSigRx/iGenSig_CALGB_ACOSOG/2024-03-26.dGenSig_45_benchmark.result.xls" file. The file has the summary of the prediction performance AUROC.
